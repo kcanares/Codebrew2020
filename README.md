@@ -2,6 +2,7 @@
 
 ### Description
 
+Dependencies: Python 3.7.4, Node 10.15.3, npm 6.4.1
 Working application is hosted at [http://165.22.254.55](http://165.22.254.55)
 
 ### Development Guide
@@ -16,3 +17,19 @@ Working application is hosted at [http://165.22.254.55](http://165.22.254.55)
 ### Production Guide
 
 Build the production version by running this command `docker-compose -f docker-compose.yml up --build -d`.
+
+### Install Frontend Dependencies
+
+When you need to install third-party libraries for the frontend, follow these steps:
+1. Go to the client folder: `$ cd client`
+2. Install the library using: `$ npm install <library_name>`
+
+
+### Install Backend Dependencies
+
+When you need to install third-party libraries for the backend, follow these steps:
+1. Go to the client folder: `$ cd server`
+2. If haven't got a virtual environment, create one: `$ virtualenv venv --python=python3.7`
+3. Activate the virtual environment: `$ source venv/bin/activate`
+4. Install the library using: `$ pip install <library_name>`
+5. CRUCIAL: Update `requirements.txt` using: `$ pip freeze > requirements.txt`
