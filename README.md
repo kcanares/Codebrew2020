@@ -28,7 +28,7 @@ When you need to install third-party libraries for the frontend, follow these st
 ### Install Backend Dependencies
 
 When you need to install third-party libraries for the backend, follow these steps:
-1. Go to the client folder: `$ cd server`
+1. Go to the server folder: `$ cd server`
 2. If haven't got a virtual environment, create one: `$ virtualenv venv --python=python3.7`
 3. Activate the virtual environment: `$ source venv/bin/activate`
 4. Install the library using: `$ pip install <library_name>`
