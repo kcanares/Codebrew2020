@@ -69,13 +69,17 @@ class RecipeSpider(scrapy.Spider):
                 ingredient = selector.css('::text').extract()[1].replace(',', '')
 
             try:
-                quantity = re.findall(r"\d+", quantity_str)[0]
+                quantity = re.findall(r"\d\sx\s\d+|\d+", quantity_str)[0]
+                if 'x' in quantity:
+                    quantity = int(quantity[0:quantity.find('x')-1]) * int(quantity[quantity.find('x')+2:])
+                else:
+                    quantity = int(quantity)
                 measurement_re = re.findall(r"tsp|tbsp|ml|g|stalks", quantity_str)
                 measurement = measurement_re[0] if measurement_re else 'quantity'
 
                 item = {
                     'name': ingredient,
-                    'quantity': int(quantity),
+                    'quantity': quantity,
                     'measurement': measurement
                 }
                 recipe['ingredients'].append(item)
