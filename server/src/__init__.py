@@ -14,7 +14,7 @@ CORS(app)
 app.config.from_object(Config)
 
 
-client = MongoClient('mongodb://165.22.254.55:27017/')
+client = MongoClient('mongodb://db:27017/')
 db = client['codebrew2020']
 
 from .routes import *
