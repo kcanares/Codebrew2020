@@ -22,7 +22,7 @@ def generate_recipe(user_id):
     for recipe in recipes:
 
         # initialise one recipe
-        recipe_info['_id'] = recipe
+        recipe_info[recipe['_id']] = recipe
         '''recipe_info['_id']['nutrition'] = recipe['nutrition']
         recipe_info['_id']['ingredients'] = recipe['ingredients']
         recipe_info['_id']['steps'] = recipe['steps']
@@ -52,7 +52,7 @@ def generate_recipe(user_id):
         # return top 10
         top_10_list = []
         highest = 10
-        for i in [1, highest+1]:
+        for i in range(1, highest+1):
             top_10_list.append(recipe_info[top_10_list[i]['_id']])
 
         return top_10_list
