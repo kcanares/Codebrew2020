@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/auth_screen/dietary_requirements_screen/dietary_requirements_screen.dart';
-import 'package:recipe/scaffold/unauthenticated_scaffold.dart';
+import 'package:recipe/widgets/scaffold/unauthenticated_scaffold.dart';
 
 class AuthScreen extends StatelessWidget {
   @override

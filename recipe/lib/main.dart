@@ -11,29 +11,65 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        scaffoldBackgroundColor: Color(0xFFa5a58d),
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        buttonColor: Color(0xFFf0efeb)
-      ),
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          scaffoldBackgroundColor: Color(0xFFeeeeee),
+          bottomSheetTheme: BottomSheetThemeData(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)))),
+          buttonTheme: ButtonThemeData(
+              buttonColor: ColorPallete.primaryColor,
+              textTheme: ButtonTextTheme.primary),
+          textTheme:
+              GoogleFonts.montserratTextTheme(Theme.of(context).textTheme)
+                  .apply(
+            bodyColor: Colors.black,
+            displayColor: Color(0xFF001c19),
+          ),
+          primaryColor: ColorPallete.lighPrimaryColor,
+          tabBarTheme: TabBarTheme(
+            labelColor: ColorPallete.primaryColor,
+            unselectedLabelStyle:
+                GoogleFonts.montserratTextTheme(Theme.of(context).textTheme)
+                    .caption,
+            labelStyle:
+                GoogleFonts.montserratTextTheme(Theme.of(context).textTheme)
+                    .caption
+                    .copyWith(fontWeight: FontWeight.bold),
+          ),
+          // This makes the visual density adapt to the platform that you run
+          // the app on. For desktop platforms, the controls will be smaller and
+          // closer together (more dense) than on mobile platforms.
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: ColorPallete.primaryColor,
+          ),
+          appBarTheme: AppBarTheme(
+              color: ColorPallete.lighPrimaryColor,
+              iconTheme: IconThemeData(color: ColorPallete.primaryColor),
+              textTheme:
+                  GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
+              brightness: Brightness.light)),
       home: AuthScreen(),
     );
   }
+}
+
+class ColorPallete {
+  static const primaryColor = const Color(0xFF003833);
+  static const lighPrimaryColor = const Color(0xFFa4d6bb);
 }
 
 class MyHomePage extends StatefulWidget {

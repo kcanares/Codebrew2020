@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:chips_choice/chips_choice.dart';
+import 'package:flutter/material.dart';
 import 'package:recipe/auth_screen/dietary_requirements_screen/meals_plans/meals_plans_screen.dart';
-import 'package:recipe/scaffold/unauthenticated_scaffold.dart';
+import 'package:recipe/widgets/scaffold/unauthenticated_scaffold.dart';
 
 List<String> options = [
   'Vegan',
@@ -21,10 +21,7 @@ class DietaryRequirementsScreen extends StatelessWidget {
         children: [
           Text(
             "My dietary\nrequirements are",
-            style: Theme.of(context)
-                .textTheme
-                .headline4
-                .copyWith(color: Color(0xFFf0efeb)),
+            style: Theme.of(context).textTheme.headline4,
             textAlign: TextAlign.left,
           ),
           ChipsChoice<String>.multiple(
