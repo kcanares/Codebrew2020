@@ -94,18 +94,18 @@ def tally_ingredients(recipe_df):
 
         # tally all sale items
         for ingredient in recipe_df.loc[i]['sale ingredients']:
-            if (ingredient["id"], ingredient["measurement"]) not in tally_dict:
-                tally_dict[ingredient["id"], ingredient["measurement"]] = dict()
-                tally_dict[ingredient["id"], ingredient["measurement"]]["id"] = ingredient["id"]
-                tally_dict[ingredient["id"], ingredient["measurement"]]['on_sale'] = True
-                tally_dict[ingredient["id"], ingredient["measurement"]]['quantity'] = ingredient['quantity']
-                tally_dict[ingredient["id"], ingredient["measurement"]]['measurement'] = ingredient["measurement"]
+            if ingredient["id"] not in tally_dict:
+                tally_dict[ingredient["id"]] = dict()
+                tally_dict[ingredient["id"]]["id"] = ingredient["id"]
+                tally_dict[ingredient["id"]]['on_sale'] = True
+                tally_dict[ingredient["id"]]['quantity'] = ingredient['quantity']
+                tally_dict[ingredient["id"]]['measurement'] = ingredient["measurement"]
             else:
-                tally_dict[ingredient["id"], ingredient["measurement"]]['quantity'] += ingredient['quantity']
+                tally_dict[ingredient["id"]]['quantity'] += ingredient['quantity']
 
         # tally all non sale items
         for ingredient in recipe_df.loc[i]['non sale ingredients']:
-            if (ingredient["name"], ingredient["measurement"]) not in tally_dict:
+            if ingredient["name"] not in tally_dict:
                 tally_dict[ingredient["name"], ingredient["measurement"]] = dict()
                 tally_dict[ingredient["name"], ingredient["measurement"]]['on_sale'] = False
                 tally_dict[ingredient["name"], ingredient["measurement"]]['quantity'] = ingredient['quantity']
