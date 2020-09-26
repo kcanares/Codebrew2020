@@ -14,20 +14,6 @@ services:
     volumes:
       - ./server/src:/app/server/src
     restart: always
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.dev
-    env_file:
-      - .env
-    ports:
-      - ${REACT_APP_PORT}:${REACT_APP_PORT}
-    depends_on:
-      - server
-    volumes:
-      - ./client/src:/app/client/src
-      - ./client/public:/app/client/public
-    restart: always
   db:
     image: mongo
     ports:

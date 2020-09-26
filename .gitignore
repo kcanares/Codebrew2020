@@ -8,6 +8,8 @@ venv/
 *.pyc
 .idea/
 __pycache__
+test.py
+*.json
 
 # testing
 /client/coverage
