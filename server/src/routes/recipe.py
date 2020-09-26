@@ -1,4 +1,5 @@
 import json
+import random
 
 from flask import jsonify, request
 from pandas import DataFrame
@@ -22,24 +23,29 @@ DAYS = {
 @app.route('/recipes', methods=['GET'])
 def get_recipes():
     user_id = request.args.get('user_id')
-    cooking_time_bound = request.args.get('cooking_time_bound')
-    supermarkets = request.args.get('supermarket')
-    if supermarkets:
-        supermarkets = supermarkets.split(',')
 
-    recipes = json.loads(generate_recipe(user_id))
+    params = request.args
+
+    recipes = json.loads(generate_recipe(user_id, params))
 
     for i in range(len(recipes)):
         recipes[i]['day'] = DAYS[i % DAYS_IN_A_WEEK]
+        recipes[i]['servings'] = random.randint(1, 5)
 
     return jsonify(recipes)
 
 
 # matches recipes to ingredients. sorts them according to match ratio
-def generate_recipe(user_id):
+def generate_recipe(user_id, params):
     product_collection = db_client['ingredients']
     recipe_collection = db_client['recipes']
     user_collection = db_client['user']
+
+    # Params
+    cooking_time_bound = params.get('cooking_time_bound')
+    supermarkets = params.get('supermarket')
+    if supermarkets:
+        supermarkets = supermarkets.split(',')
 
     products = product_collection.find({})
     recipes = recipe_collection.find({})
@@ -62,6 +68,10 @@ def generate_recipe(user_id):
         if 'Gluten-free' in user['dietary_requirements'] and recipe_df.iloc[i]['gluten_free'] != False:
             recipe_df.loc[i, 'ratio'] = -1
             continue
+        if cooking_time_bound and recipe_df.iloc[i]['cook_time'] < int(cooking_time_bound):
+            recipe_df.loc[i, 'ratio'] = -1
+            continue
+
         for ingredient in recipe_df.iloc[i]['ingredients']:
             ingredient_words = ingredient['name'].split()
             if "stock" or "noodles" in ingredient_words:
