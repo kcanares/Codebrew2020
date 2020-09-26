@@ -49,6 +49,14 @@ def generate_recipe(user_id):
         # update top 10
         top_10_recipe = update_top_10(top_10_recipe, recipe_info[recipe['_id']])
 
+        # return top 10
+        top_10_list = []
+        highest = 10
+        for i in [1, highest+1]:
+            top_10_list.append(recipe_info[top_10_list[i]['_id']])
+
+        return top_10_list
+
 
 def update_top_10(top_10, one_recipe):
     if len(top_10) == 0:
