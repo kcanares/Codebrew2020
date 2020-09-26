@@ -71,6 +71,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.3"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.10"
   fake_async:
     dependency: transitive
     description:
@@ -109,6 +116,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  hive:
+    dependency: "direct main"
+    description:
+      name: hive
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.4"
+  hive_flutter:
+    dependency: "direct main"
+    description:
+      name: hive_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
   http:
     dependency: transitive
     description:
@@ -124,7 +145,7 @@ packages:
     source: hosted
     version: "3.1.4"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"
@@ -144,6 +165,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  page_transition:
+    dependency: "direct main"
+    description:
+      name: page_transition
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.6"
   path:
     dependency: transitive
     description:

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-const _stores = ["Coles", "Woolies", "Aldi", "IGA"];
+const stores = ["Coles", "Woolies", "Aldi", "IGA"];
 
-const _mealsPlans = ['Everything', 'No breakfast', 'No lunch', 'No dinner'];
+const mealsPlans = ['Everything', 'No breakfast', 'No lunch', 'No dinner'];
 
-const _dietaryRequirements = [
+const dietaryRequirements = [
   'Vegan',
   'Lactose intolerant',
   'Egg intolerant',
@@ -27,7 +27,7 @@ class StoresFilter extends StatelessWidget {
         ),
         Wrap(
           children: [
-            ..._stores.map((e) => Padding(
+            ...stores.map((e) => Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: ChoiceChip(
                     label: Text(e),
@@ -57,7 +57,7 @@ class MealsPlansFilter extends StatelessWidget {
         ),
         Wrap(
           children: [
-            ..._mealsPlans.map((e) => Padding(
+            ...mealsPlans.map((e) => Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: ChoiceChip(
                     label: Text(e),
@@ -87,7 +87,7 @@ class DietaryRequirementsFilter extends StatelessWidget {
         ),
         Wrap(
           children: [
-            ..._dietaryRequirements.map((e) => Padding(
+            ...dietaryRequirements.map((e) => Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: ChoiceChip(
                     label: Text(e),

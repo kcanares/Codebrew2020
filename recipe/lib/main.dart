@@ -1,9 +1,20 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe/auth_screen/auth_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:recipe/splash_screen/splash_screen.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+
+  await Hive.openBox('recipesBox');
+
   runApp(MyApp());
+}
+
+class ApiService {
+  static final dio = Dio(BaseOptions(baseUrl: "http://165.22.254.55:5000"));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +49,7 @@ class MyApp extends StatelessWidget {
             bodyColor: Colors.black,
             displayColor: Color(0xFF001c19),
           ),
-          primaryColor: ColorPallete.lighPrimaryColor,
+          primaryColor: ColorPallete.primaryColor,
           tabBarTheme: TabBarTheme(
             labelColor: ColorPallete.primaryColor,
             unselectedLabelStyle:
@@ -49,6 +60,7 @@ class MyApp extends StatelessWidget {
                     .caption
                     .copyWith(fontWeight: FontWeight.bold),
           ),
+
           // This makes the visual density adapt to the platform that you run
           // the app on. For desktop platforms, the controls will be smaller and
           // closer together (more dense) than on mobile platforms.
@@ -62,7 +74,7 @@ class MyApp extends StatelessWidget {
               textTheme:
                   GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
               brightness: Brightness.light)),
-      home: AuthScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/auth_screen/dietary_requirements_screen/meals_plans/meals_plans_screen.dart';
+import 'package:recipe/widgets/recipes_filter.dart';
 import 'package:recipe/widgets/scaffold/unauthenticated_scaffold.dart';
 
 List<String> options = [
@@ -11,7 +12,15 @@ List<String> options = [
   'Gluten free',
 ];
 
-class DietaryRequirementsScreen extends StatelessWidget {
+class DietaryRequirementsScreen extends StatefulWidget {
+  @override
+  _DietaryRequirementsScreenState createState() =>
+      _DietaryRequirementsScreenState();
+}
+
+class _DietaryRequirementsScreenState extends State<DietaryRequirementsScreen> {
+  final selectedItems = Set<String>();
+
   @override
   Widget build(BuildContext context) {
     return UnauthenticatedScaffold(
@@ -24,16 +33,25 @@ class DietaryRequirementsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.headline4,
             textAlign: TextAlign.left,
           ),
-          ChipsChoice<String>.multiple(
-            isWrapped: true,
-            value: [options.first],
-            options: ChipsChoiceOption.listFrom<String, String>(
-              source: options,
-              value: (i, v) => v,
-              label: (i, v) => v,
-            ),
-            onChanged: (val) {},
-            padding: EdgeInsets.zero,
+          Wrap(
+            children: dietaryRequirements
+                .map((e) => Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: selectedItems.contains(e),
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              selectedItems.add(e);
+                            } else {
+                              selectedItems.remove(e);
+                            }
+                          });
+                        },
+                      ),
+                    ))
+                .toList(),
           ),
           Container(
             width: double.infinity,
@@ -43,7 +61,9 @@ class DietaryRequirementsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MealsPlansScreen(),
+                      builder: (context) => MealsPlansScreen(
+                        dietaryRequirements: selectedItems,
+                      ),
                     ));
               },
             ),

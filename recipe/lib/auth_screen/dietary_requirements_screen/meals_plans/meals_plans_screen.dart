@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:recipe/auth_screen/dietary_requirements_screen/meals_plans/create_account_screen/create_account_screen.dart';
 import 'package:recipe/recipes_screen/recipes_screen.dart';
+import 'package:recipe/widgets/recipes_filter.dart';
 import 'package:recipe/widgets/scaffold/unauthenticated_scaffold.dart';
 
-final _choices = ['Everything', 'No breakfast', 'No lunch', 'No dinner'];
+class MealsPlansScreen extends StatefulWidget {
+  final Set<String> dietaryRequirements;
 
-class MealsPlansScreen extends StatelessWidget {
+  const MealsPlansScreen({Key key, this.dietaryRequirements})
+      : assert(dietaryRequirements != null),
+        super(key: key);
+
+  @override
+  _MealsPlansScreenState createState() => _MealsPlansScreenState();
+}
+
+class _MealsPlansScreenState extends State<MealsPlansScreen> {
+  String selectedItem = mealsPlans.first;
+
   @override
   Widget build(BuildContext context) {
     return UnauthenticatedScaffold(
@@ -16,12 +30,17 @@ class MealsPlansScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headline4),
           Wrap(
             children: [
-              ..._choices
+              ...mealsPlans
                   .map((e) => Padding(
                         padding: EdgeInsets.only(right: 8.0),
-                        child: ActionChip(
+                        child: ChoiceChip(
                           label: Text(e),
-                          onPressed: () {},
+                          onSelected: (isSelected) {
+                            setState(() {
+                              selectedItem = e;
+                            });
+                          },
+                          selected: selectedItem == e,
                         ),
                       ))
                   .toList()
@@ -33,7 +52,12 @@ class MealsPlansScreen extends StatelessWidget {
               child: Text("Next"),
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => RecipesScreen()),
+                    PageTransition(
+                        child: CreateAccountScreen(
+                          mealPlan: selectedItem,
+                          dietaryRequirements: widget.dietaryRequirements,
+                        ),
+                        type: PageTransitionType.fade),
                     (Route<dynamic> route) => false);
               },
             ),

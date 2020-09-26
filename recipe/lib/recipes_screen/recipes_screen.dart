@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:recipe/main.dart';
 import 'package:recipe/recipes_screen/weekly_recipes_screen/weekly_recipes_screen.dart';
 import 'package:recipe/widgets/recipes_filter.dart';
 import 'package:recipe/widgets/scaffold/authenticated_scaffold.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 const CURVE_HEIGHT = 300.0;
 
@@ -17,114 +20,128 @@ class RecipesScreen extends StatelessWidget {
         toolbarHeight: 0,
       ),
       currentIndex: 0,
-      body: ListView(
-        children: [
-          Stack(
-            children: [
-              CurvedShape(),
-              Column(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ValueListenableBuilder(
+          valueListenable: Hive.box('recipesBox').listenable(keys: ['recipes']),
+          builder: (context, box, widget) {
+            List recipes = box.get('recipes');
+
+            final todayRecipes = recipes.where((recipe) {
+              return recipe['day'] == DateFormat('EEEE').format(DateTime.now());
+            }).toList();
+
+            return ListView(
+              children: [
+                Stack(
+                  children: [
+                    CurvedShape(),
+                    Column(
                       children: [
-                        Text("Today's Recipes",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                .copyWith(
-                                    color: ColorPallete.primaryColor,
-                                    fontWeight: FontWeight.bold)),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.settings),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Wrap(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text("Recipes Options",
-                                                    textAlign: TextAlign.center,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: ColorPallete
-                                                                .primaryColor)),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 12.0),
-                                              child: StoresFilter(),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 12.0),
-                                              child: MealsPlansFilter(),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 12.0),
-                                              child:
-                                                  DietaryRequirementsFilter(),
-                                            ),
-                                            Container(
-                                              width: double.infinity,
-                                              child: RaisedButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("Save"),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24.0, vertical: 6.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Today's Recipes",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      .copyWith(
+                                          color: ColorPallete.primaryColor,
+                                          fontWeight: FontWeight.bold)),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.settings),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Wrap(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text("Recipes Options",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headline5
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: ColorPallete
+                                                                      .primaryColor)),
+                                                    ],
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 12.0),
+                                                    child: StoresFilter(),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 12.0),
+                                                    child: MealsPlansFilter(),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 12.0),
+                                                    child:
+                                                        DietaryRequirementsFilter(),
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: RaisedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Save"),
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.view_list),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          WeeklyRecipesScreen(),
-                                    ));
-                              },
-                              splashColor: Colors.red,
-                            ),
-                          ],
-                        )
+                                            );
+                                          });
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.view_list),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                WeeklyRecipesScreen(),
+                                          ));
+                                    },
+                                    splashColor: Colors.red,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Carousel(recipes: todayRecipes)
                       ],
-                    ),
-                  ),
-                  Carousel()
-                ],
-              )
-            ],
-          ),
-          NutritionChart()
-        ],
-      ),
+                    )
+                  ],
+                ),
+                NutritionChart()
+              ],
+            );
+          }),
     );
   }
 }
@@ -218,7 +235,7 @@ class NutritionChart extends StatelessWidget {
               children: dataMap.keys
                   .map((key) => Container(
                         width: double.infinity,
-                        padding: EdgeInsets.only(bottom: 24.0),
+                        padding: EdgeInsets.only(bottom: 12.0),
                         child: Card(
                           elevation: 3,
                           child: Container(
@@ -287,13 +304,17 @@ class NutritionChart extends StatelessWidget {
 }
 
 class Carousel extends StatefulWidget {
+  final List recipes;
+
+  const Carousel({Key key, this.recipes}) : super(key: key);
+
   @override
   _CarouselState createState() => _CarouselState();
 }
 
 class _CarouselState extends State<Carousel> {
   final items = <String>[];
-  int _page = 1;
+  int _page = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -303,11 +324,12 @@ class _CarouselState extends State<Carousel> {
         SizedBox(
           // you may want to use an aspect ratio here for tablet support
           height: 220.0,
+          width: double.infinity,
           child: PageView.builder(
             // store this controller in a State to save the carousel scroll position
             controller:
                 PageController(viewportFraction: 0.4, initialPage: _page),
-            itemCount: 3,
+            itemCount: widget.recipes.length,
             onPageChanged: (page) {
               setState(() {
                 _page = page;
@@ -323,18 +345,34 @@ class _CarouselState extends State<Carousel> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: Material(
-                        color: ColorPallete.primaryColor,
-                        elevation: 5,
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        child: Container(),
-                      ),
-                    ),
+                        child: Material(
+                            color: ColorPallete.primaryColor,
+                            elevation: 5,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0)),
+                            child: Container(
+                                decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    widget.recipes[itemIndex]['image_url']),
+                                fit: BoxFit.cover,
+                              ),
+                            )))),
                     AnimatedOpacity(
                         duration: Duration(milliseconds: 100),
                         opacity: isSelected ? 1 : 0,
                         child: Column(
-                          children: [Text("Something"), Text("500kj")],
+                          children: [
+                            Text(
+                              widget.recipes[itemIndex]['name'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(widget.recipes[itemIndex]['nutrition']['kcal']
+                                    .toString() +
+                                " kj")
+                          ],
                         ))
                   ],
                 ),

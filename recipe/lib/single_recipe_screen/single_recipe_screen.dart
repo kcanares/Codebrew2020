@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/main.dart';
-import 'package:recipe/recipes_screen/weekly_recipes_screen/weekly_recipes_screen.dart';
+import 'package:recipe/single_recipe_screen/recipes_ingredients.dart';
 import 'package:recipe/single_recipe_screen/recipes_nutritions_tab_view.dart';
 import 'package:recipe/single_recipe_screen/recipes_tab_view.dart';
 
@@ -13,6 +13,12 @@ enum SingingCharacter { lafayette, jefferson }
 SingingCharacter _character = SingingCharacter.lafayette;
 
 class SingleRecipeScreen extends StatelessWidget {
+  final Map recipes;
+
+  const SingleRecipeScreen({Key key, this.recipes})
+      : assert(recipes != null),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -40,176 +46,10 @@ class SingleRecipeScreen extends StatelessWidget {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          Container(
-                              color: Colors.white,
-                              padding: EdgeInsets.all(12.0),
-                              child: Card(
-                                child: Column(
-                                  children: [
-                                    Material(
-                                      color: Color(0xFFF0F0F0),
-                                      child: Container(
-                                        padding: EdgeInsets.all(12.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Servings",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                            ),
-                                            Text(
-                                              "4 (300kj)",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: MediaQuery.removePadding(
-                                        context: context,
-                                        removeTop: true,
-                                        child: ListView(
-                                          shrinkWrap: true,
-                                          children: [
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                            RadioListTile<SingingCharacter>(
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Something"),
-                                                  Text("Meat",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption)
-                                                ],
-                                              ),
-                                              value: SingingCharacter.lafayette,
-                                              groupValue: _character,
-                                              onChanged:
-                                                  (SingingCharacter value) {},
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                          RecipesTabView(),
+                          RecipesIngredients(recipes: recipes),
+                          RecipesTabView(
+                            recipes: recipes,
+                          ),
                           RecipesNutritionTabView(),
                         ],
                       ),
@@ -225,12 +65,13 @@ class SingleRecipeScreen extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 height: _imageHeight,
-                child: FittedBox(
-                  child: Image.network(
-                    placeholderImageUrl,
+                child: Container(
+                    decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(recipes['image_url']),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
-                ),
+                )),
               ),
             ),
             Positioned(
@@ -245,7 +86,7 @@ class SingleRecipeScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Fried Rice",
+                          recipes['name'],
                           style: Theme.of(context).textTheme.headline5.copyWith(
                               color: ColorPallete.primaryColor,
                               fontWeight: FontWeight.bold),

@@ -88,7 +88,6 @@ class LabeledRadio extends StatelessWidget {
                               .subtitle2
                               .apply(fontSizeFactor: 0.95),
                         ),
-                        
                       )
                     ]),
                     Wrap(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:recipe/cart_screen/cart_screen.dart';
+import 'package:recipe/more_screen/more_screen.dart';
 import 'package:recipe/recipes_screen/recipes_screen.dart';
 
 class AuthenticatedScaffold extends StatelessWidget {
@@ -28,15 +30,18 @@ class AuthenticatedScaffold extends StatelessWidget {
           if (index == 0) {
             Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => RecipesScreen(),
-                ));
+                PageTransition(
+                    child: RecipesScreen(), type: PageTransitionType.fade));
           } else if (index == 1) {
             Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => CartScreen(),
-                ));
+                PageTransition(
+                    child: CartScreen(), type: PageTransitionType.fade));
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+                context,
+                PageTransition(
+                    child: MoreScreen(), type: PageTransitionType.fade));
           }
         },
       ),
