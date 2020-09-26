@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:recipe/main.dart';
 import 'package:recipe/recipes_screen/weekly_recipes_screen/weekly_recipes_screen.dart';
+import 'package:recipe/single_recipe_screen/single_recipe_screen.dart';
 import 'package:recipe/utils.dart';
 import 'package:recipe/widgets/recipes_filter.dart';
 import 'package:recipe/widgets/scaffold/authenticated_scaffold.dart';
@@ -362,43 +363,55 @@ class _CarouselState extends State<Carousel> {
             itemBuilder: (BuildContext context, int itemIndex) {
               final isSelected = itemIndex == _page;
 
-              return AnimatedContainer(
-                duration: Duration(milliseconds: 100),
-                padding: EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: isSelected ? 8.0 : 20.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: Material(
-                            color: ColorPallete.primaryColor,
-                            elevation: 5,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
-                            child: Container(
-                                decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.recipes[itemIndex]['image_url']),
-                                fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleRecipeScreen(
+                          recipes: widget.recipes[itemIndex],
+                        ),
+                      ));
+                },
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 100),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: isSelected ? 8.0 : 20.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: Material(
+                              color: ColorPallete.primaryColor,
+                              elevation: 5,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0)),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      widget.recipes[itemIndex]['image_url']),
+                                  fit: BoxFit.cover,
+                                ),
+                              )))),
+                      AnimatedOpacity(
+                          duration: Duration(milliseconds: 100),
+                          opacity: isSelected ? 1 : 0,
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.recipes[itemIndex]['name'],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
                               ),
-                            )))),
-                    AnimatedOpacity(
-                        duration: Duration(milliseconds: 100),
-                        opacity: isSelected ? 1 : 0,
-                        child: Column(
-                          children: [
-                            Text(
-                              widget.recipes[itemIndex]['name'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(widget.recipes[itemIndex]['nutrition']['kcal']
-                                    .toString() +
-                                " kj")
-                          ],
-                        ))
-                  ],
+                              Text(widget.recipes[itemIndex]['nutrition']
+                                          ['kcal']
+                                      .toString() +
+                                  " kj")
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
               );
             },

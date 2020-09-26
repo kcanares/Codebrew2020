@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:recipe/main.dart';
 import 'package:recipe/recipes_screen/recipes_screen.dart';
+import 'package:recipe/utils.dart';
 
 class RecipesNutritionTabView extends StatelessWidget {
   final Map recipes;
@@ -49,7 +50,7 @@ class RecipesNutritionTabView extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 4.0),
                               child: Text(
-                                key,
+                                capitalize(key),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1

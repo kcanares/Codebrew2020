@@ -44,7 +44,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       final recipesBox = await Hive.openBox('recipesBox');
       final remoteRecipes =
           await ApiService.dio.get('/recipes?user_id=$userOid');
-      await recipesBox.putAll({'recipes': remoteRecipes.data});
+      await recipesBox.putAll({'recipes': remoteRecipes.data['meals']});
 
       await Navigator.push(
           context,
