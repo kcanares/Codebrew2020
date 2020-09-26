@@ -1,1 +1,1 @@
-from . import recipe, user
+from . import recipe, user, ingredient
