@@ -6,12 +6,6 @@ import 'package:recipe/single_recipe_screen/recipes_tab_view.dart';
 
 const _imageHeight = 220.0;
 
-enum SingingCharacter { lafayette, jefferson }
-
-// ...
-
-SingingCharacter _character = SingingCharacter.lafayette;
-
 class SingleRecipeScreen extends StatelessWidget {
   final Map recipes;
 
@@ -50,7 +44,9 @@ class SingleRecipeScreen extends StatelessWidget {
                           RecipesTabView(
                             recipes: recipes,
                           ),
-                          RecipesNutritionTabView(),
+                          RecipesNutritionTabView(
+                            recipes: recipes,
+                          ),
                         ],
                       ),
                     )
@@ -90,6 +86,7 @@ class SingleRecipeScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline5.copyWith(
                               color: ColorPallete.primaryColor,
                               fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -112,7 +109,7 @@ class SingleRecipeScreen extends StatelessWidget {
                           width: 40,
                           child: IconButton(
                               icon: Icon(
-                                Icons.arrow_back,
+                                Icons.arrow_downward,
                                 color: Colors.white,
                               ),
                               onPressed: () {
