@@ -10,7 +10,9 @@ def sign_up():
     user = User(
         email=data['email'],
         password=data['password'],
-        name=data['name']
+        name=data['name'],
+        dietary_requirements=data['dietary_requirements'],
+        meal_option=data['meal_option']
     )
     user.save()
 
@@ -55,6 +57,10 @@ def update_user(user_id):
     data = request.get_json()
     if 'name' in data:
         user.name = data['name']
+    if 'dietary_requirements' in data:
+        user.dietary_requirements = data['dietary_requirements']
+    if 'meal_option' in data:
+        user.meal_option = data['meal_option']
 
     user.save()
 
