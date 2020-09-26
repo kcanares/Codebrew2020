@@ -1,6 +1,7 @@
 import pymongo
 from pymongo import MongoClient
-
+from pandas import DataFrame
+import numpy as np
 
 def generate_recipe(user_id):
     client = MongoClient("mongodb://165.22.254.55:27017/")
@@ -8,83 +9,44 @@ def generate_recipe(user_id):
 
     product_collection = db['ingredients']
     recipe_collection = db['recipes']
-    user_collection = db['users']
+    user_collection = db['user']
 
     products = product_collection.find({})
     recipes = recipe_collection.find({})
     user = user_collection.find_one({'_id': user_id})
 
-    # keep a count of how many discounted products are in each recipe as well as what are the discounts
-    recipe_info = dict()
-    # keep track of the top 5 recipes {1: {'id', 'discount_ratio'}, 2: {'id', 'discount_ratio'}...}
-    top_10_recipe = dict()
+    recipe_lst = list(recipes)
+    recipe_df = DataFrame(recipe_lst)
+    recipe_df["ratio"] = np.nan
 
-    for recipe in recipes:
+    # create a column of empty lists
+    recipe_df["sale ingredients"] = np.empty((len(recipe_df), 0)).tolist()
+    product_lst =list(products)
 
-        # initialise one recipe
-        recipe_info[recipe['_id']] = recipe
-        '''recipe_info['_id']['nutrition'] = recipe['nutrition']
-        recipe_info['_id']['ingredients'] = recipe['ingredients']
-        recipe_info['_id']['steps'] = recipe['steps']
-        recipe_info['_id']['name'] = recipe['name']
-        recipe_info['_id']['image_url'] = recipe['image_url']
-        recipe_info['_id']['prep_time'] = recipe['prep_time']
-        recipe_info['_id']['cooking_time'] = recipe['cooking_time']'''
-        recipe_info[recipe['_id']]['ratio'] = 0
-        recipe_info[recipe['_id']]['discounts'] = dict()
-
-        for ingredient in recipe['ingredients']:
-            # check allergy
-            if ingredient['name'] in user['dietary_req']:
-                recipe_info.pop(recipe['_id'])
-                break
+    for i in range(len(recipe_df)):
+        for ingredient in recipe_df.iloc[i]['ingredients']:
+            # TODO: check allergy
+            # if ingredient['name'] in user['dietary_req']:
+            #     recipe_info.pop(recipe['_id'])
+            #     break
 
             # check discount
-            for product in products:
-                if ingredient['name'] in product['title']:
-                    recipe_info[recipe['_id']]['discounts'][ingredient['name']] = product
-                    recipe_info[recipe['_id']]['ratio'] = len(recipe_info[recipe['_id']]['discounts']) / \
-                                                          recipe_info[recipe['_id']]['ingredients']
+            for product in product_lst:
+                for word in ingredient['name'].split():
+                    if word in product['title']:
+                        recipe_df.iloc[i]["sale ingredients"].append(product['_id'])
+        ratio = float(len(recipe_df.loc[i]["sale ingredients"]) / len(recipe_df.loc[i]['ingredients']))
+        recipe_df.loc[i]['ratio'] = ratio
 
-        # update top 10
-        top_10_recipe = update_top_10(top_10_recipe, recipe_info[recipe['_id']])
+    recipe_df.sort_values(by=['ratio'])
+    print(recipe_df.iloc[:]['ratio'])
+    # # return top 10
+    # top_10_list = []
+    # highest = 10
+    # for i in range(0, highest):
+    #     top_10_list.append(recipe_info[top_10_recipe[i]['_id']])
+    #
+    # return top_10_list
 
-        # return top 10
-        top_10_list = []
-        highest = 10
-        for i in range(1, highest+1):
-            top_10_list.append(recipe_info[top_10_list[i]['_id']])
 
-        return top_10_list
-
-
-def update_top_10(top_10, one_recipe):
-    if len(top_10) == 0:
-        top_10[1]['_id'] = one_recipe['_id']
-        top_10[1]['ratio'] = one_recipe['ratio']
-    count = 10
-    switch_pos = 0
-    if len(top_10) < count:
-        count = len(top_10)
-    for i in range(count, 0, -1):
-        if top_10[i]['ratio'] < one_recipe['ratio']:
-            switch_pos = i
-        else:
-            break
-
-    if switch_pos:
-        for j in range(count, switch_pos-1, -1):
-            if j == 10:
-                continue
-            else:
-                top_10[j+1]['_id'] = top_10[j]['_id']
-                top_10[j+1]['ratio'] = top_10[j]['ratio']
-
-        top_10[switch_pos]['_id'] = one_recipe['_id']
-        top_10[switch_pos]['ratio'] = one_recipe['ratio']
-
-    if count < 10 and switch_pos == 0:
-        top_10[count+1]['id'] = one_recipe['_id']
-        top_10[count+1]['ratio'] = one_recipe['ratio']
-
-    return top_10
+print(generate_recipe('5f6e7fdf20993e3adbef5535'))
