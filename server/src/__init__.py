@@ -10,7 +10,7 @@ CORS(app)
 app.config.from_object(Config)
 
 
-client = MongoClient('mongodb://db:27017/')
+client = MongoClient('mongodb://165.22.254.55:27017/')
 db_client = client['codebrew2020']
 db = MongoEngine(app)
 

@@ -32,18 +32,12 @@ class RecipeSpider(scrapy.Spider):
             for selector in article_selectors:
                 link = selector.xpath("@href").extract_first()
                 if link:
-                    yield Request(url=link, callback=self.parse_article)
+                    if 'https' in link:
+                        yield Request(url=link, callback=self.parse_article)
+                    else:
+                        yield Request(url='https://www.bbcgoodfood.com/recipes{}'.format(link), callback=self.parse_article)
         else:
             return
-
-        # self.page_index += 1
-        # if self.page_index > 100:
-        #     return
-        # yield Request(
-        #         url=self.BASE_URL+str(self.page_index),
-        #         callback=self.parse,
-        #         dont_filter=True
-        # )
 
     def parse_article(self, response):
         recipe = {
@@ -59,6 +53,12 @@ class RecipeSpider(scrapy.Spider):
         time_selector = response.css(".icon-with-text__children ul li time::text")
         recipe['prep_time'] = convert_str_to_minutes(time_selector.extract()[0])
         recipe['cook_time'] = convert_str_to_minutes(time_selector.extract()[1])
+
+        tags_selector = response.css(".term-icon-list").extract()[0]
+        if 'Vegan' in tags_selector or 'Vegetarian' in tags_selector:
+            recipe['vegan'] = True
+        if 'Gluten-free' in tags_selector:
+            recipe['gluten_free'] = True
 
         ingredient_selector = response.css('.pb-xxs')
         for selector in ingredient_selector:
